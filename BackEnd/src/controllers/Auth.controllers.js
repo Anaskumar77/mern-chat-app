@@ -2,10 +2,13 @@ import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
-  console.log(req.body);
   const { fullname, email, password } = req.body;
+  if (!fullname || !email || !password) {
+    res.status(400).json({ message: "field is empty" });
+  }
   const user = await User.findOne({ email: email });
 
   if (user) {
@@ -23,8 +26,8 @@ export const signup = async (req, res) => {
   });
 
   if (newUser) {
-    // jwt token creation
-    generateToken(newUser._id, res);
+    console.log(newUser._id.toString());
+    generateToken(newUser._id.toString(), res);
     await newUser.save();
     res.status(200).json({
       _id: newUser._id,
@@ -67,4 +70,25 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   res.send("logout");
+};
+
+export const updateProfile = async (req, res) => {
+  // userId = req.user;
+  try {
+    const { profilePic } = req.body;
+    const userId = req.user._id.toString();
+
+    if (!profilePic) {
+      res.status(400).json({ message: "please provide a profile pic" });
+    }
+    const response = await cloudinary.uploader.upload(profilePic);
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: userId },
+      { profilepic: response.secure_url },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log(err);
+  }
 };
