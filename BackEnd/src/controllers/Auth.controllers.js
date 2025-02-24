@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
-import cloudinary from "../lib/cloudinary.js";
+// import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -72,23 +72,13 @@ export const logout = (req, res) => {
   res.send("logout");
 };
 
-export const updateProfile = async (req, res) => {
-  // userId = req.user;
+export const authCheck = (req, res) => {
   try {
-    const { profilePic } = req.body;
-    const userId = req.user._id.toString();
-
-    if (!profilePic) {
-      res.status(400).json({ message: "please provide a profile pic" });
-    }
-    const response = await cloudinary.uploader.upload(profilePic);
-    const updatedUser = await User.findByIdAndUpdate(
-      { _id: userId },
-      { profilepic: response.secure_url },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
+    console.log(req.user);
+    // res.status(200).json(req.user);
   } catch (err) {
-    console.log(err);
+    console.log("auth check Error");
+    //  console.log(err);
+    res.status(500).json({ message: "internal server error" });
   }
 };
