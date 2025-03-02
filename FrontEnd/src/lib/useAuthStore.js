@@ -35,13 +35,15 @@ export const useAuthStore = create((set) => ({
       console.log("hello");
       if (res) {
         console.log(res);
-        set({ authUser: res.user });
+        set({ authUser: res.data });
         toast.success("Account created successfully");
         set({ isSigningUp: false });
       }
     } catch (err) {
       console.log(err.message);
-      toast.error("Account creation failed");
+      toast.error("Account creation failed , useAuthStore => signup");
+    } finally {
+      set({ isSigningUp: false });
     }
   },
   logout: async () => {
@@ -50,7 +52,23 @@ export const useAuthStore = create((set) => ({
       set({ authUser: null });
       console.log("logout success");
     } catch {
-      console.log("logout failed");
+      console.log("logout failed , useAuthStore => logout");
+    }
+  },
+  login: async (loginData) => {
+    try {
+      console.log("login started");
+      set({ isLoggingIn: true });
+      const res = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        loginData
+      );
+      set({ authUser: res.data });
+      console.log("login successfull");
+    } catch {
+      console.log("login failed : useAuthStore => login");
+    } finally {
+      set({ isLoggingIn: false });
     }
   },
 }));
