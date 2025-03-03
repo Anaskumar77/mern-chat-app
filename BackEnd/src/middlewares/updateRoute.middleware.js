@@ -9,13 +9,21 @@ export const updateProfile = async (req, res) => {
     if (!profilePic) {
       res.status(400).json({ message: "please provide a profile pic" });
     }
-    const response = await cloudinary.uploader.upload(profilePic);
-    const updatedUser = await User.findByIdAndUpdate(
-      { _id: userId },
-      { profilepic: response.secure_url },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
+    try {
+      const response = await cloudinary.uploader.upload(profilePic);
+      console.log(response.secure_url);
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: userId },
+        { profilepic: response.secure_url },
+        { new: true }
+      );
+      const hello = await User.findOne({ _id: userId });
+      console.log(hello);
+      console.log("hello");
+      // res.status(400).json({ message: " mmm" });
+    } catch (e) {
+      console.log(e.message);
+    }
   } catch (err) {
     console.log(err);
   }

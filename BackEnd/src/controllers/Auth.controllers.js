@@ -33,7 +33,6 @@ export const signup = async (req, res) => {
       _id: newUser._id,
       fullname: newUser.fullname,
       email: newUser.email,
-      // profilepic:newUser.profilepic
     });
   } else {
     return res
@@ -52,7 +51,14 @@ export const login = async (req, res) => {
     }
     const isPassword = await bcryptjs.compare(password, user.password);
     if (isPassword) {
-      generateToken(user._id, res);
+      const generatedToken = generateToken(user._id, res);
+      res.cookie("jwt", generatedToken, {
+        httpOnly: true,
+        secure: false || process.env.NODE_ENV !== "development",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
       return res.status(200).json({
         _id: user._id,
         fullname: user.fullname,
@@ -63,6 +69,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "password is invalid" });
     }
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({
       message: "internal server error in user login",
     });

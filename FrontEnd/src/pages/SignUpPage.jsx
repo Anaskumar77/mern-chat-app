@@ -34,6 +34,7 @@ const SignUpPage = () => {
     if (success) {
       console.log("success is true");
       signup(formData);
+      console.log("success ");
       return toast.success("Hellooooo");
     } else {
       console.log("else");

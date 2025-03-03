@@ -21,7 +21,10 @@ app.use(cookieParser());
 
 app.use("/api/auth", AuthRoutes);
 app.use("/api/message", MessageRoutes);
-
+app.get("/test-cookie", (req, res) => {
+  res.cookie("1", "hello 1", { httpOnly: true });
+  res.send("Test cookie set!");
+});
 app.listen(process.env.PORT, () => {
   console.log(`server is running on PORT:${process.env.PORT}`);
   ConnectDB();

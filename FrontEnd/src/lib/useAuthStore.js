@@ -59,16 +59,34 @@ export const useAuthStore = create((set) => ({
     try {
       console.log("login started");
       set({ isLoggingIn: true });
+      axios.defaults.withCredentials = true;
       const res = await axios.post(
         "http://localhost:3000/api/auth/login",
         loginData
       );
       set({ authUser: res.data });
+
       console.log("login successfull");
+      console.log(res.data);
     } catch {
       console.log("login failed : useAuthStore => login");
     } finally {
       set({ isLoggingIn: false });
+    }
+  },
+  updateProfile: async (data) => {
+    try {
+      set({ isUpdatingProfile: true });
+      const res = await axios.put(
+        "http://localhost:3000/api/auth/profile-update",
+        data
+      );
+      console.log(res.data);
+    } catch {
+      console.log("profile updating updating failed");
+    } finally {
+      set({ isUpdatingProfile: false });
+      console.log("finally block");
     }
   },
 }));
