@@ -10,11 +10,13 @@ export const useAuthStore = create((set) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   checkingAuth: true,
+  profilePic: null,
 
   authCheck: async () => {
     try {
       const res = axiosInstance.get("/auth/check");
       set({ authUser: res.data });
+      set({ profilePic: res.data.profilepic });
     } catch {
       set({ authUser: null });
     } finally {
@@ -65,9 +67,9 @@ export const useAuthStore = create((set) => ({
         loginData
       );
       set({ authUser: res.data });
-
+      set({ profilePic: res.data.profilepic });
+      console.log(res.data.profilepic);
       console.log("login successfull");
-      console.log(res.data);
     } catch {
       console.log("login failed : useAuthStore => login");
     } finally {

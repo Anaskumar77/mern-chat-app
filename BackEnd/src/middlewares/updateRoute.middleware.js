@@ -1,6 +1,7 @@
 import cloudinary from "../lib/cloudinary.js";
-
+import User from "../models/user.model.js";
 export const updateProfile = async (req, res) => {
+  console.log("hello");
   // userId = req.user;
   try {
     const { profilePic } = req.body;
@@ -17,10 +18,10 @@ export const updateProfile = async (req, res) => {
         { profilepic: response.secure_url },
         { new: true }
       );
-      const hello = await User.findOne({ _id: userId });
-      console.log(hello);
+      // const hello = await User.findOne({ _id: userId });
+      console.log(updatedUser);
       console.log("hello");
-      // res.status(400).json({ message: " mmm" });
+      return res.status(200).json(updatedUser);
     } catch (e) {
       console.log(e.message);
     }

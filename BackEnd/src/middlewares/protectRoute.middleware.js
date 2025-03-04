@@ -14,19 +14,20 @@ const protectRoute = async (req, res, next) => {
         return res.status(400).json({ message: "Invalid user info's" });
       }
       try {
+        console.log(userId.id);
         const user = await User.findOne({ _id: userId.id }).select("-password");
         req.user = user; /////// // / / / / / /
 
-        return res.status(200).json(user);
+        // res.status(200).json(user);
         next();
       } catch (err) {
-        console.log(err.message);
+        console.log(err);
         return res.status(500).json({ message: "internal server Error" });
       }
     }
   } catch (err) {
     // console.log("heloooooooooooooo");
-    console.log(err.message);
+    console.log(err);
     return res.status(500).json({ message: "internal error" });
   }
 };

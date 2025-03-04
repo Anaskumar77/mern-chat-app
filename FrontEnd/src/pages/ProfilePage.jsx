@@ -5,7 +5,7 @@ import { Camera, FastForward, Mail, User } from "lucide-react";
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
-
+  console.log(authUser.profilePic);
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -34,7 +34,8 @@ const ProfilePage = () => {
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
               <img
-                src={selectedImg || authUser.profilePic || "/avatar.png"}
+                src={selectedImg || authUser.profilepic || "/avatar.png"}
+                // src="https://res.cloudinary.com/dikxcogde/image/upload/v1741111273/dutxehfobwstwq5bjju5.jpg"
                 alt="Profile"
                 className="size-32 rounded-full object-cover border-4 "
               />
