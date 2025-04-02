@@ -4,20 +4,13 @@ import cloudinary from "../lib/cloudinary.js";
 export const getUsersForSideBar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    console.log(currentUserId);
-    const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select(
-      "-password"
-    );
-
-    if (!otherUsers) {
-      res.status(500).json({
-        messages:
-          "Internal server error, we can't find the side bar users. sorry  :( ",
-      });
-    }
-    res.send(200).json(otherUsers);
+    const otherUsers = await User.find({
+      _id: { $ne: loggedInUserId.toString() },
+    }).select("-password");
+    console.log("   users   :", otherUsers);
+    return res.status(200).json(otherUsers);
   } catch {
-    res.status(500).json({ message: "getUsersForSideBar" });
+    return res.status(500).json({ message: "getUsersForSideBar failed" });
   }
 };
 

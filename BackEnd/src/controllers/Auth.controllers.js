@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
   });
 
   if (newUser) {
-    console.log(newUser._id.toString());
+    console.log("New User Id:", newUser._id.toString());
     generateToken(newUser._id.toString(), res);
     await newUser.save();
     return res.status(201).json({
@@ -86,9 +86,9 @@ export const logout = (req, res) => {
 };
 
 export const authCheck = (req, res) => {
-  console.log(" auth check");
+  console.log(" auth checking");
   try {
-    console.log(req.user);
+    // console.log(req.user);
     res.status(200).json(req.user);
   } catch (err) {
     console.log("auth check Error");

@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 // import { getBottomNavigationActionUtilityClass } from "@mui/material";
-export const useAuthStore = create((set) => ({
+
+const useAuthStore = create((set) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -13,9 +14,11 @@ export const useAuthStore = create((set) => ({
 
   authCheck: async () => {
     try {
-      const res = axiosInstance.get("/auth/check");
+      console.log("authCheck started");
+      const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
       console.log("authCheck response", res.data);
+      console.log(res.data ? "verified" : "not verified");
     } catch {
       set({ authUser: null });
     } finally {
@@ -41,7 +44,10 @@ export const useAuthStore = create((set) => ({
         set({ isSigningUp: false });
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(
+        err.message,
+        "Account creation failed , useAuthStore => signup"
+      );
       toast.error("Account creation failed , useAuthStore => signup");
     } finally {
       set({ isSigningUp: false });
@@ -89,3 +95,5 @@ export const useAuthStore = create((set) => ({
     }
   },
 }));
+
+export default useAuthStore;

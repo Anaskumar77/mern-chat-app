@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuthStore } from "../lib/useAuthStore";
+import useAuthStore from "../lib/useAuthStore.js";
 import toast from "react-hot-toast";
 
 const SignUpPage = () => {
@@ -10,7 +10,7 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const { isSigningUp, signup } = useAuthStore();
+  const { signup } = useAuthStore();
 
   const validating = () => {
     // const passwordRegex =

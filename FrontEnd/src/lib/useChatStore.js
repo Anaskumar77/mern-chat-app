@@ -11,8 +11,10 @@ const useChatStore = create((set) => ({
   getUsers: async () => {
     try {
       set({ isUsersLoading: true });
-      const res = await axiosInstance.get("/messages/users");
-      set({ users: res.data.users });
+      const res = await axiosInstance.get(
+        "http://localhost:3000/api/message/user"
+      );
+      set({ users: res.data });
     } catch (err) {
       console.log("error in getting users ");
 
@@ -33,6 +35,10 @@ const useChatStore = create((set) => ({
     } finally {
       set({ isMessagesLoading: false });
     }
+  },
+  // optimise user
+  setSelectedUser: (selectedUser) => {
+    set({ selectedUser: selectedUser });
   },
 }));
 

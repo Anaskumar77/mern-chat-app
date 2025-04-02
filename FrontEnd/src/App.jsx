@@ -7,7 +7,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
-import { useAuthStore } from "./lib/useAuthStore";
+import useAuthStore from "./lib/useAuthStore";
 
 import { grid } from "ldrs";
 
@@ -15,6 +15,7 @@ function App() {
   const { authUser, authCheck, checkingAuth } = useAuthStore();
 
   useEffect(() => {
+    console.log("helooo");
     authCheck();
   }, [authCheck]);
 
@@ -33,7 +34,7 @@ function App() {
       <Navbar></Navbar>
       <Routes>
         <Route
-          path="/home"
+          path="/"
           element={authUser ? <HomePage /> : <Navigate to="/login" />}
         ></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
