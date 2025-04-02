@@ -86,6 +86,7 @@ export const logout = (req, res) => {
 };
 
 export const authCheck = (req, res) => {
+  console.log(" auth check");
   try {
     console.log(req.user);
     res.status(200).json(req.user);

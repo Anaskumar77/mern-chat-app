@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
 const protectRoute = async (req, res, next) => {
+  console.log("p r");
   try {
     const token = req.cookies.jwt;
     if (!token) {
@@ -14,11 +15,12 @@ const protectRoute = async (req, res, next) => {
         return res.status(400).json({ message: "Invalid user info's" });
       }
       try {
-        console.log(userId.id);
+        console.log("protected routes");
         const user = await User.findOne({ _id: userId.id }).select("-password");
         req.user = user; /////// // / / / / / /
-
         // res.status(200).json(user);
+        console.log(user);
+
         next();
       } catch (err) {
         console.log(err);
